@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Um Presente Para Minha Melhor Amiga ♡</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff8fab;
+            --secondary-color: #f3a6b1;
+            --text-color: #5c3b42;
+            --bg-color-1: #fde4ea;
+            --bg-color-2: #e9d5e9;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(45deg, var(--bg-color-1), var(--bg-color-2), #d8b4d8);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            box-shadow: 0 8px 32px 0 rgba(131, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 40px 50px;
+            max-width: 600px;
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            color: var(--primary-color);
+            font-size: 3.5em;
+            margin: 0 0 15px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        p {
+            font-size: 1.1em;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        .music-player {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px dashed var(--secondary-color);
+        }
+        
+        .music-player p {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        audio {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 50px;
+            outline: none;
+            filter: sepia(20%) saturate(70%) grayscale(1) contrast(99%) invert(12%);
+        }
+        
+        /* Coração Pulsante Principal */
+        .pulsing-heart {
+            position: relative;
+            width: 80px;
+            height: 70px;
+            margin: 20px auto;
+            animation: pulse 1.8s infinite ease-in-out;
+            filter: drop-shadow(0 0 15px var(--primary-color));
+        }
+
+        .pulsing-heart::before,
+        .pulsing-heart::after {
+            position: absolute;
+            content: "";
+            left: 40px;
+            top: 0;
+            width: 40px;
+            height: 64px;
+            background: var(--primary-color);
+            border-radius: 50px 50px 0 0;
+            transform: rotate(-45deg);
+            transform-origin: 0 100%;
+        }
+
+        .pulsing-heart::after {
+            left: 0;
+            transform: rotate(45deg);
+            transform-origin: 100% 100%;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(0.95); }
+        }
+
+        /* Animações de Fundo (Corações e Brilho) */
+        .animated-bg > div {
+            position: fixed;
+            top: -10vh;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 1;
+        }
+        
+        .heart, .sparkle {
+            position: absolute;
+            bottom: -50px;
+            animation: fly 10s linear infinite;
+        }
+        
+        @keyframes fly {
+            0% {
+                transform: translateY(0) translateX(var(--x-start)) rotate(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-120vh) translateX(var(--x-end)) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        .heart {
+            width: var(--size);
+            height: var(--size);
+            background: var(--color);
+            transform: rotate(-45deg);
+        }
+        
+        .heart::before, .heart::after {
+            content: '';
+            position: absolute;
+            width: var(--size);
+            height: var(--size);
+            background: var(--color);
+            border-radius: 50%;
+        }
+        .heart::before { top: calc(var(--size) * -0.5); left: 0; }
+        .heart::after { top: 0; left: calc(var(--size) * 0.5); }
+        
+        .sparkle {
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 10px white, 0 0 15px white;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="animated-bg" id="animation-container"></div>
+
+    <div class="card">
+        <h1>Minha Estrela,</h1>
+        <p>
+            Às vezes, as palavras parecem pequenas para dizer tudo o que sinto. Nossa amizade é como um refúgio, um lugar quentinho onde eu sei que sempre posso ser eu mesma. Você transforma dias nublados em céus estrelados só com seu sorriso. Obrigada por cada conselho, cada gargalhada que me fez chorar de rir e cada abraço que consertou meu mundo. Você não é apenas minha melhor amiga, é um pedacinho da minha alma.
+        </p>
+
+        <div class="pulsing-heart"></div>
+
+        <div class="music-player">
+            <p>A nossa trilha sonora:</p>
+            <audio controls autoplay loop>
+                <source src="sua-musica.mp3" type="audio/mpeg">
+                Seu navegador não suporta áudio. Que pena!
+            </audio>
+        </div>
+    </div>
+
+    <script>
+        const container = document.getElementById('animation-container');
+        const particlesCount = 50;
+
+        for (let i = 0; i < particlesCount; i++) {
+            const isHeart = Math.random() > 0.4;
+            const particle = document.createElement('div');
+            
+            if (isHeart) {
+                particle.classList.add('heart');
+                const size = Math.random() * 20 + 10 + 'px';
+                const color = Math.random() > 0.5 ? 'rgba(255, 255, 255, 0.8)' : 'rgba(252, 145, 172, 0.8)';
+                particle.style.setProperty('--size', size);
+                particle.style.setProperty('--color', color);
+            } else {
+                particle.classList.add('sparkle');
+            }
+            
+            const xStart = Math.random() * 200 - 100 + 'px';
+            const xEnd = Math.random() * 200 - 100 + 'px';
+            particle.style.setProperty('--x-start', xStart);
+            particle.style.setProperty('--x-end', xEnd);
+            
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.animationDuration = `${Math.random() * 8 + 7}s`;
+            particle.style.animationDelay = `${Math.random() * 5}s`;
+            
+            container.appendChild(particle);
+        }
+    </script>
+
+</body>
+  </html>
