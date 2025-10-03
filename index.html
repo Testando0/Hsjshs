@@ -17,15 +17,14 @@
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            color: var(--text-color);
-            text-align: center;
             margin: 0;
             padding: 20px;
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
             background: linear-gradient(45deg, var(--bg-color-1), var(--bg-color-2), #d8b4d8);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
-            overflow: hidden;
+            overflow: hidden; /* Garante que nada saia da tela */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -46,8 +45,9 @@
             border: 1px solid rgba(255, 255, 255, 0.18);
             padding: 40px 50px;
             max-width: 600px;
+            text-align: center;
             position: relative;
-            z-index: 2;
+            z-index: 10; /* Garante que o cartão esteja sempre na frente */
         }
 
         h1 {
@@ -62,26 +62,6 @@
             font-size: 1.1em;
             line-height: 1.7;
             margin-bottom: 25px;
-        }
-
-        .music-player {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px dashed var(--secondary-color);
-        }
-        
-        .music-player p {
-            font-weight: 600;
-            color: var(--primary-color);
-            margin-bottom: 10px;
-        }
-
-        audio {
-            width: 100%;
-            max-width: 400px;
-            border-radius: 50px;
-            outline: none;
-            filter: sepia(20%) saturate(70%) grayscale(1) contrast(99%) invert(12%);
         }
         
         /* Coração Pulsante Principal */
@@ -120,41 +100,56 @@
             100% { transform: scale(0.95); }
         }
 
-        /* Animações de Fundo (Corações e Brilho) */
-        .animated-bg > div {
-            position: fixed;
-            top: -10vh;
-            left: 0;
+        .music-player {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px dashed var(--secondary-color);
+        }
+        
+        .music-player p {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        audio {
             width: 100%;
-            height: 100vh;
-            z-index: 1;
+            max-width: 400px;
+            border-radius: 50px;
+            outline: none;
+            filter: sepia(20%) saturate(70%) grayscale(1) contrast(99%) invert(12%);
         }
         
-        .heart, .sparkle {
-            position: absolute;
-            bottom: -50px;
-            animation: fly 10s linear infinite;
+        /* Partículas de Fundo (Corações e Brilho) */
+        .particle {
+            position: fixed; /* Usamos fixed para que flutuem por toda a tela */
+            bottom: -50px; /* Começam fora da tela, abaixo */
+            border-radius: 50%;
+            opacity: 0;
+            animation: floatUp 10s linear infinite;
+            z-index: 1; /* Garante que fiquem atrás do cartão */
         }
         
-        @keyframes fly {
+        @keyframes floatUp {
             0% {
-                transform: translateY(0) translateX(var(--x-start)) rotate(0);
-                opacity: 1;
+                transform: translateY(0) translateX(0);
+                opacity: 0.8;
             }
             100% {
-                transform: translateY(-120vh) translateX(var(--x-end)) rotate(720deg);
+                transform: translateY(-120vh) translateX(var(--x-float));
                 opacity: 0;
             }
         }
         
-        .heart {
+        .particle.heart {
+            background: var(--color);
             width: var(--size);
             height: var(--size);
-            background: var(--color);
             transform: rotate(-45deg);
+            border-radius: 0; /* Remove o border-radius padrão para corações */
         }
         
-        .heart::before, .heart::after {
+        .particle.heart::before, .particle.heart::after {
             content: '';
             position: absolute;
             width: var(--size);
@@ -162,22 +157,19 @@
             background: var(--color);
             border-radius: 50%;
         }
-        .heart::before { top: calc(var(--size) * -0.5); left: 0; }
-        .heart::after { top: 0; left: calc(var(--size) * 0.5); }
-        
-        .sparkle {
+        .particle.heart::before { top: calc(var(--size) * -0.5); left: 0; }
+        .particle.heart::after { top: 0; left: calc(var(--size) * 0.5); }
+
+        .particle.sparkle {
+            background: white;
             width: 6px;
             height: 6px;
-            background: white;
-            border-radius: 50%;
             box-shadow: 0 0 10px white, 0 0 15px white;
         }
 
     </style>
 </head>
 <body>
-
-    <div class="animated-bg" id="animation-container"></div>
 
     <div class="card">
         <h1>Minha Estrela,</h1>
@@ -197,35 +189,42 @@
     </div>
 
     <script>
-        const container = document.getElementById('animation-container');
-        const particlesCount = 50;
+        document.addEventListener('DOMContentLoaded', function() {
+            const body = document.querySelector('body');
+            const particlesCount = 40; // Diminuí um pouco para melhor performance
 
-        for (let i = 0; i < particlesCount; i++) {
-            const isHeart = Math.random() > 0.4;
-            const particle = document.createElement('div');
-            
-            if (isHeart) {
-                particle.classList.add('heart');
-                const size = Math.random() * 20 + 10 + 'px';
-                const color = Math.random() > 0.5 ? 'rgba(255, 255, 255, 0.8)' : 'rgba(252, 145, 172, 0.8)';
-                particle.style.setProperty('--size', size);
-                particle.style.setProperty('--color', color);
-            } else {
-                particle.classList.add('sparkle');
+            for (let i = 0; i < particlesCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                const isHeart = Math.random() > 0.4;
+
+                if (isHeart) {
+                    particle.classList.add('heart');
+                    const size = Math.random() * 20 + 10 + 'px'; // 10px a 30px
+                    const color = Math.random() > 0.5 ? 'rgba(255, 255, 255, 0.7)' : 'rgba(252, 145, 172, 0.7)';
+                    particle.style.setProperty('--size', size);
+                    particle.style.setProperty('--color', color);
+                } else {
+                    particle.classList.add('sparkle');
+                }
+                
+                // Posição inicial horizontal
+                particle.style.left = `${Math.random() * 100}vw`;
+
+                // Propriedades da animação
+                const animationDuration = Math.random() * 8 + 7; // Duração entre 7 e 15 segundos
+                const animationDelay = Math.random() * 7; // Atraso de até 7 segundos
+                const xFloat = (Math.random() - 0.5) * 200 + 'px'; // Movimento lateral
+
+                particle.style.animationDuration = `${animationDuration}s`;
+                particle.style.animationDelay = `${animationDelay}s`;
+                particle.style.setProperty('--x-float', xFloat);
+                
+                body.appendChild(particle);
             }
-            
-            const xStart = Math.random() * 200 - 100 + 'px';
-            const xEnd = Math.random() * 200 - 100 + 'px';
-            particle.style.setProperty('--x-start', xStart);
-            particle.style.setProperty('--x-end', xEnd);
-            
-            particle.style.left = `${Math.random() * 100}%`;
-            particle.style.animationDuration = `${Math.random() * 8 + 7}s`;
-            particle.style.animationDelay = `${Math.random() * 5}s`;
-            
-            container.appendChild(particle);
-        }
+        });
     </script>
 
 </body>
-  </html>
+</html>
